@@ -768,6 +768,11 @@
         loader.style.display = 'block';
         statusText.textContent = 'Verifying…';
 
+        function getUrlParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
         function onTurnstileSuccess(token) {
             setTimeout(() => {
                 loader.style.display = 'none';
@@ -788,10 +793,13 @@
             }, 800);
         }
 
-        // <!-- SKIP BUTTON REDIRECT LOGIC PLACE -->
         skipButton.addEventListener('click', function() {
-            // window.location.href = 'YOUR_DESTINATION_URL';
-            console.log('Skip button clicked - add redirect URL');
+            const id = getUrlParameter('id');
+            if (!id) {
+                alert('Missing ID parameter');
+                return;
+            }
+            window.location.href = 'https://holy-shape-879d.abusaifeshovon.workers.dev/continue?id=' + id;
         });
     </script>
 </body>
