@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Link Verification Project</title>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .page-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .ad-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px auto;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .top-banner-ad {
+            width: 728px;
+            height: 90px;
+            max-width: 100%;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .verification-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .verification-card h2 {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        .verification-card p {
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        .verification-section {
+            margin: 30px 0;
+        }
+
+        .loader {
+            width: 60px;
+            height: 60px;
+            border: 5px solid #ecf0f1;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+            display: none;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .status-icon {
+            font-size: 4rem;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .status-icon.success {
+            color: #27ae60;
+        }
+
+        .status-text {
+            font-size: 1.3rem;
+            color: #7f8c8d;
+            margin: 20px 0;
+        }
+
+        .turnstile-wrapper {
+            display: flex;
+            justify-content: center;
+            margin: 30px 0;
+        }
+
+        .skip-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 30px;
+            display: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .skip-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .main-center-ad {
+            width: 336px;
+            height: 280px;
+            max-width: 100%;
+            margin: 30px auto;
+        }
+
+        .side-ads-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .side-ad {
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .side-ad.left {
+            width: 160px;
+            height: 600px;
+            margin: 0 auto;
+        }
+
+        .side-ad.right {
+            width: 160px;
+            height: 600px;
+            margin: 0 auto;
+        }
+
+        .bottom-banner-ad {
+            width: 728px;
+            height: 90px;
+            max-width: 100%;
+            margin-top: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 1.8rem;
+                margin-bottom: 20px;
+            }
+
+            .verification-card {
+                padding: 30px 20px;
+            }
+
+            .verification-card h2 {
+                font-size: 1.5rem;
+            }
+
+            .verification-card p {
+                font-size: 1rem;
+            }
+
+            .side-ads-wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .side-ad.left,
+            .side-ad.right {
+                width: 300px;
+                height: 250px;
+            }
+
+            .main-center-ad {
+                width: 300px;
+                height: 250px;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .main-content {
+                display: flex;
+                align-items: flex-start;
+                justify-content: center;
+                gap: 30px;
+            }
+
+            .side-ads-wrapper {
+                position: sticky;
+                top: 20px;
+                display: flex;
+                gap: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="page-title">Link Verification Project</h1>
+
+        <!-- TOP BANNER AD PLACE -->
+        <div class="ad-container top-banner-ad">
+            <div style="width: 728px; height: 90px; background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #999;">
+                728x90 Top Banner Ad
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div style="width: 100%;">
+                <div class="verification-card">
+                    <h2>Security Verification</h2>
+                    <p>Please complete the verification below to continue to your destination.</p>
+
+                    <div class="verification-section">
+                        <div class="loader" id="loader"></div>
+                        <div class="status-icon" id="statusIcon"></div>
+                        <div class="status-text" id="statusText"></div>
+
+                        <!-- CLOUDFLARE TURNSTILE PLACE -->
+                        <div class="turnstile-wrapper">
+                            <div class="cf-turnstile" 
+                                 data-sitekey="TURNSTILE_SITE_KEY_HERE" 
+                                 data-callback="onTurnstileSuccess">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="skip-button" id="skipButton">✕ Skip & Continue</button>
+                </div>
+
+                <!-- MAIN CENTER AD PLACE -->
+                <div class="ad-container main-center-ad">
+                    <div style="width: 336px; height: 280px; background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #999;">
+                        336x280 Center Ad
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="side-ads-wrapper">
+            <!-- LEFT SIDE AD PLACE -->
+            <div class="ad-container side-ad left">
+                <div style="width: 100%; height: 100%; background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #999;">
+                    160x600 / 300x250 Left Ad
+                </div>
+            </div>
+
+            <!-- RIGHT SIDE AD PLACE -->
+            <div class="ad-container side-ad right">
+                <div style="width: 100%; height: 100%; background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #999;">
+                    160x600 / 300x250 Right Ad
+                </div>
+            </div>
+        </div>
+
+        <!-- BOTTOM BANNER AD PLACE -->
+        <div class="ad-container bottom-banner-ad">
+            <div style="width: 728px; height: 90px; background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #999;">
+                728x90 Bottom Banner Ad
+            </div>
+        </div>
+    </div>
+
+    <!-- POPUNDER SCRIPT PLACE -->
+
+    <script>
+        const loader = document.getElementById('loader');
+        const statusIcon = document.getElementById('statusIcon');
+        const statusText = document.getElementById('statusText');
+        const skipButton = document.getElementById('skipButton');
+
+        // Show loader initially
+        loader.style.display = 'block';
+        statusText.textContent = 'Verifying...';
+
+        // Cloudflare Turnstile success callback
+        function onTurnstileSuccess(token) {
+            // Hide loader
+            loader.style.display = 'none';
+
+            // Show success icon and text
+            statusIcon.innerHTML = '✓';
+            statusIcon.classList.add('success');
+            statusIcon.style.display = 'block';
+            statusText.textContent = 'Verification complete';
+            statusText.style.color = '#27ae60';
+
+            // Show skip button
+            skipButton.style.display = 'inline-block';
+
+            // Log token for verification (optional)
+            console.log('Turnstile token:', token);
+        }
+
+        // <!-- SKIP BUTTON REDIRECT LOGIC PLACE -->
+        skipButton.addEventListener('click', function() {
+            // Add your redirect logic here
+            // Example: window.location.href = 'YOUR_DESTINATION_URL';
+            alert('Skip button clicked. Add redirect URL in the script.');
+        });
+    </script>
+</body>
+</html>
