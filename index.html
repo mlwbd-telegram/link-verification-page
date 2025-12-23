@@ -5,11 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Link Verification Project</title>
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    
+    <!-- POPUNDER SCRIPT PLACE -->
+    <script src="https://pl28316965.effectivegatecpm.com/28/7f/4a/287f4a4e15075c6bbf0ab45497c06ef9.js"></script>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
@@ -28,6 +35,9 @@
             line-height: 1.6;
             position: relative;
             overflow-x: hidden;
+            will-change: auto;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         body::before {
@@ -45,6 +55,7 @@
             animation: bgShift 25s ease infinite;
             pointer-events: none;
             z-index: 0;
+            will-change: transform;
         }
 
         @keyframes bgShift {
@@ -67,14 +78,19 @@
             margin-bottom: 40px;
             letter-spacing: -0.02em;
             text-shadow: 0 4px 20px rgba(236, 72, 153, 0.4),
-                         0 0 40px rgba(14, 165, 233, 0.3),
-                         0 0 60px rgba(168, 85, 247, 0.2);
+                         0 0 40px rgba(14, 165, 233, 0.3);
             animation: titleFloat 3s ease-in-out infinite;
+            will-change: transform;
         }
 
         @keyframes titleFloat {
             0%, 100% { transform: translateY(0px); }
             50% { transform: translateY(-5px); }
+        }
+
+        @keyframes bgShift {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(-3%, 3%); }
         }
 
         .ad-container {
@@ -84,16 +100,18 @@
             margin: 25px auto;
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             border-radius: 16px;
             border: 1px solid rgba(255, 255, 255, 0.08);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3),
                         0 2px 8px rgba(255, 255, 255, 0.05) inset;
             overflow: hidden;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transform: translateZ(0);
         }
 
         .ad-container:hover {
-            transform: translateY(-2px);
+            transform: translateY(-2px) translateZ(0);
             box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4),
                         0 2px 8px rgba(255, 255, 255, 0.08) inset;
         }
@@ -114,6 +132,7 @@
         .verification-card {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
             border-radius: 24px;
             padding: 50px 40px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5),
@@ -125,19 +144,14 @@
             margin: 0 auto;
             width: 100%;
             position: relative;
-            transform: perspective(1000px) rotateX(0deg);
+            transform: translateZ(0);
             transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1),
                         box-shadow 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-            animation: cardFloat 4s ease-in-out infinite;
-        }
-
-        @keyframes cardFloat {
-            0%, 100% { transform: perspective(1000px) rotateX(0deg) translateY(0px); }
-            50% { transform: perspective(1000px) rotateX(1deg) translateY(-8px); }
+            will-change: transform;
         }
 
         .verification-card:hover {
-            transform: perspective(1000px) rotateX(2deg) translateY(-10px);
+            transform: translateY(-5px) translateZ(0);
             box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6),
                         0 0 0 1px rgba(255, 255, 255, 0.15) inset,
                         0 2px 30px rgba(236, 72, 153, 0.25) inset,
@@ -184,7 +198,9 @@
             margin: 25px auto;
             position: relative;
             display: none;
-            filter: drop-shadow(0 0 30px rgba(236, 72, 153, 0.4));
+            filter: drop-shadow(0 0 20px rgba(236, 72, 153, 0.3));
+            transform: translateZ(0);
+            will-change: transform;
         }
 
         .loader-ring {
@@ -192,20 +208,21 @@
             width: 100%;
             height: 100%;
             border-radius: 50%;
+            will-change: transform;
         }
 
         .loader-ring:nth-child(1) {
             border: 3px solid transparent;
             border-top-color: #ec4899;
             border-right-color: #ec4899;
-            animation: ringRotate 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+            animation: ringRotate 1.5s linear infinite;
         }
 
         .loader-ring:nth-child(2) {
             border: 3px solid transparent;
             border-bottom-color: #0ea5e9;
             border-left-color: #0ea5e9;
-            animation: ringRotate 2s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite reverse;
+            animation: ringRotate 2s linear infinite reverse;
         }
 
         .loader-ring:nth-child(3) {
@@ -227,6 +244,7 @@
             background: radial-gradient(circle, #ec4899 0%, #0ea5e9 50%, transparent 70%);
             border-radius: 50%;
             animation: corePulse 2s ease-in-out infinite;
+            will-change: transform, opacity;
         }
 
         .loader-particles {
@@ -241,8 +259,9 @@
             height: 6px;
             background: #22d3ee;
             border-radius: 50%;
-            box-shadow: 0 0 10px #ec4899, 0 0 20px #0ea5e9;
+            box-shadow: 0 0 10px #ec4899;
             animation: particleFloat 3s ease-in-out infinite;
+            will-change: transform, opacity;
         }
 
         .loader-particles span:nth-child(1) {
@@ -288,6 +307,7 @@
             border: 2px solid rgba(236, 72, 153, 0.3);
             border-radius: 50%;
             animation: waveExpand 2s ease-out infinite;
+            will-change: transform, opacity;
         }
 
         .loader-wave:nth-child(2) {
@@ -306,11 +326,11 @@
         @keyframes corePulse {
             0%, 100% { 
                 transform: scale(1);
-                opacity: 0.8;
+                opacity: 0.6;
             }
             50% { 
-                transform: scale(1.5);
-                opacity: 0.4;
+                transform: scale(1.3);
+                opacity: 0.3;
             }
         }
 
@@ -320,18 +340,18 @@
                 opacity: 1;
             }
             50% {
-                transform: translateY(-15px) scale(1.3);
-                opacity: 0.6;
+                transform: translateY(-12px) scale(1.2);
+                opacity: 0.7;
             }
         }
 
         @keyframes waveExpand {
             0% {
                 transform: scale(0.8);
-                opacity: 0.8;
+                opacity: 0.6;
             }
             100% {
-                transform: scale(1.5);
+                transform: scale(1.4);
                 opacity: 0;
             }
         }
@@ -387,6 +407,8 @@
             position: relative;
             overflow: hidden;
             letter-spacing: 0.02em;
+            transform: translateZ(0);
+            will-change: transform;
         }
 
         .skip-button::before {
@@ -405,25 +427,25 @@
         }
 
         .skip-button:hover {
-            transform: translateY(-3px);
+            transform: translateY(-2px) translateZ(0);
             box-shadow: 0 12px 32px rgba(236, 72, 153, 0.5),
                         0 2px 12px rgba(14, 165, 233, 0.3) inset;
         }
 
         .skip-button:active {
-            transform: translateY(-1px);
+            transform: translateY(-1px) translateZ(0);
         }
 
         .main-center-ad {
-            width: 336px;
-            height: 280px;
+            width: 300px;
+            height: 250px;
             max-width: 100%;
             margin: 35px auto;
         }
 
         .side-ads-wrapper {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr;
             gap: 35px;
             margin: 35px 0;
         }
@@ -431,6 +453,7 @@
         .side-ad {
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             border-radius: 16px;
             border: 1px solid rgba(255, 255, 255, 0.08);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3),
@@ -440,10 +463,11 @@
             justify-content: center;
             align-items: center;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transform: translateZ(0);
         }
 
         .side-ad:hover {
-            transform: translateY(-2px);
+            transform: translateY(-2px) translateZ(0);
             box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4),
                         0 2px 8px rgba(255, 255, 255, 0.08) inset;
         }
@@ -467,7 +491,61 @@
             margin-top: 35px;
         }
 
+        .mobile-top-vertical {
+            width: 160px;
+            height: 600px;
+            max-width: 100%;
+        }
+
+        .side-ad.left {
+            width: 160px;
+            height: 600px;
+            margin: 0 auto;
+        }
+
+        .mobile-ad {
+            display: none;
+        }
+
+        .desktop-ad {
+            display: block;
+        }
+
+        .desktop-ad-container {
+            display: block;
+        }
+
+        .mobile-ad-container {
+            display: none;
+        }
+
         @media (max-width: 768px) {
+            .mobile-top-vertical {
+                width: 300px;
+                height: 250px;
+            }
+
+            .side-ad.left {
+                width: 300px;
+                height: 250px;
+            }
+
+            .mobile-ad {
+                display: block;
+            }
+
+            .desktop-ad {
+                display: none;
+            }
+
+            .desktop-ad-container {
+                display: none;
+            }
+
+            .mobile-ad-container {
+                display: block;
+            }
+
             .page-title {
                 font-size: 2rem;
                 margin-bottom: 30px;
@@ -490,8 +568,7 @@
                 grid-template-columns: 1fr;
             }
 
-            .side-ad.left,
-            .side-ad.right {
+            .side-ad.left {
                 width: 300px;
                 height: 250px;
             }
@@ -541,8 +618,43 @@
 
         <!-- TOP BANNER AD PLACE -->
         <div class="ad-container top-banner-ad">
-            <div class="ad-placeholder" style="width: 728px; height: 90px;">
-                728Ã—90 Banner
+            <script>
+                atOptions = {
+                    'key' : '6c066c7293d2bd60eef8b2aaa4de7b01',
+                    'format' : 'iframe',
+                    'height' : 90,
+                    'width' : 728,
+                    'params' : {}
+                };
+            </script>
+            <script src="https://www.highperformanceformat.com/6c066c7293d2bd60eef8b2aaa4de7b01/invoke.js"></script>
+        </div>
+
+        <!-- MOBILE TOP VERTICAL AD PLACE -->
+        <div class="ad-container mobile-top-vertical">
+            <div class="desktop-ad-container">
+                <script>
+                    atOptions = {
+                        'key' : '4c6ee17952277b4b7a2f2c42774b61bc',
+                        'format' : 'iframe',
+                        'height' : 600,
+                        'width' : 160,
+                        'params' : {}
+                    };
+                </script>
+                <script src="https://www.highperformanceformat.com/4c6ee17952277b4b7a2f2c42774b61bc/invoke.js"></script>
+            </div>
+            <div class="mobile-ad-container">
+                <script>
+                    atOptions = {
+                        'key' : 'e10334d9caff2722357138b81abe1399',
+                        'format' : 'iframe',
+                        'height' : 250,
+                        'width' : 300,
+                        'params' : {}
+                    };
+                </script>
+                <script src="https://www.highperformanceformat.com/e10334d9caff2722357138b81abe1399/invoke.js"></script>
             </div>
         </div>
 
@@ -583,14 +695,21 @@
                         </div>
                     </div>
 
-                    <button class="skip-button" id="skipButton">âœ• Skip & Continue</button>
+                    <button class="skip-button" id="skipButton">✕ Skip & Continue</button>
                 </div>
 
                 <!-- MAIN CENTER AD PLACE -->
                 <div class="ad-container main-center-ad">
-                    <div class="ad-placeholder" style="width: 336px; height: 280px;">
-                        336Ã—280 Center
-                    </div>
+                    <script>
+                        atOptions = {
+                            'key' : 'e10334d9caff2722357138b81abe1399',
+                            'format' : 'iframe',
+                            'height' : 250,
+                            'width' : 300,
+                            'params' : {}
+                        };
+                    </script>
+                    <script src="https://www.highperformanceformat.com/e10334d9caff2722357138b81abe1399/invoke.js"></script>
                 </div>
             </div>
         </div>
@@ -598,28 +717,47 @@
         <div class="side-ads-wrapper">
             <!-- LEFT SIDE AD PLACE -->
             <div class="ad-container side-ad left">
-                <div class="ad-placeholder" style="width: 100%; height: 100%;">
-                    160Ã—600
+                <div class="desktop-ad-container">
+                    <script>
+                        atOptions = {
+                            'key' : '4c6ee17952277b4b7a2f2c42774b61bc',
+                            'format' : 'iframe',
+                            'height' : 600,
+                            'width' : 160,
+                            'params' : {}
+                        };
+                    </script>
+                    <script src="https://www.highperformanceformat.com/4c6ee17952277b4b7a2f2c42774b61bc/invoke.js"></script>
                 </div>
-            </div>
-
-            <!-- RIGHT SIDE AD PLACE -->
-            <div class="ad-container side-ad right">
-                <div class="ad-placeholder" style="width: 100%; height: 100%;">
-                    160Ã—600
+                <div class="mobile-ad-container">
+                    <script>
+                        atOptions = {
+                            'key' : 'e10334d9caff2722357138b81abe1399',
+                            'format' : 'iframe',
+                            'height' : 250,
+                            'width' : 300,
+                            'params' : {}
+                        };
+                    </script>
+                    <script src="https://www.highperformanceformat.com/e10334d9caff2722357138b81abe1399/invoke.js"></script>
                 </div>
             </div>
         </div>
 
         <!-- BOTTOM BANNER AD PLACE -->
         <div class="ad-container bottom-banner-ad">
-            <div class="ad-placeholder" style="width: 728px; height: 90px;">
-                728Ã—90 Banner
-            </div>
+            <script>
+                atOptions = {
+                    'key' : '6c066c7293d2bd60eef8b2aaa4de7b01',
+                    'format' : 'iframe',
+                    'height' : 90,
+                    'width' : 728,
+                    'params' : {}
+                };
+            </script>
+            <script src="https://www.highperformanceformat.com/6c066c7293d2bd60eef8b2aaa4de7b01/invoke.js"></script>
         </div>
     </div>
-
-    <!-- POPUNDER SCRIPT PLACE -->
 
     <script>
         const loader = document.getElementById('loader');
@@ -628,13 +766,13 @@
         const skipButton = document.getElementById('skipButton');
 
         loader.style.display = 'block';
-        statusText.textContent = 'Verifyingâ€¦';
+        statusText.textContent = 'Verifying…';
 
         function onTurnstileSuccess(token) {
             setTimeout(() => {
                 loader.style.display = 'none';
                 
-                statusIcon.innerHTML = 'âœ“';
+                statusIcon.innerHTML = '✓';
                 statusIcon.classList.add('success');
                 statusIcon.style.display = 'block';
                 
