@@ -763,24 +763,49 @@
     </div>
 
     <script>
-    const loader = document.getElementById('loader');
-    const statusIcon = document.getElementById('statusIcon');
-    const statusText = document.getElementById('statusText');
-    const skipButton = document.getElementById('skipButton');
+        const loader = document.getElementById('loader');
+        const statusIcon = document.getElementById('statusIcon');
+        const statusText = document.getElementById('statusText');
+        const skipButton = document.getElementById('skipButton');
 
-    loader.style.display = 'block';
-    statusText.textContent = 'Verifying…';
+        loader.style.display = 'block';
+        statusText.textContent = 'Verifying…';
 
-    function onTurnstileSuccess(token) {
-        ...
-    }
+        // FIXED LINE - Expose callback to window scope for Turnstile
+        window.onTurnstileSuccess = function(token) {
+            setTimeout(() => {
+                loader.style.display = 'none';
+                
+                statusIcon.innerHTML = '✓';
+                statusIcon.classList.add('success');
+                statusIcon.style.display = 'block';
+                
+                statusText.textContent = 'Verification complete';
+                statusText.style.color = '#10b981';
+                
+                setTimeout(() => {
+                    skipButton.style.display = 'inline-block';
+                    skipButton.classList.add('show');
+                }, 300);
+                
+                console.log('Turnstile token:', token);
+            }, 800);
+        }
 
-    // <!-- SKIP BUTTON REDIRECT LOGIC PLACE -->
-    skipButton.addEventListener('click', function() {
-        // window.location.href = 'YOUR_DESTINATION_URL';
-        console.log('Skip button clicked - add redirect URL');
-    });
-</script>
+        // <!-- SKIP BUTTON REDIRECT LOGIC PLACE -->
+        skipButton.addEventListener('click', function() {
+            // FIXED LINE - Extract target parameter from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            // FIXED LINE - Get target URL
+            const targetUrl = urlParams.get('target');
+            // FIXED LINE - Validate and redirect
+            if (targetUrl) {
+                window.location.href = decodeURIComponent(targetUrl);
+            } else {
+                alert('No destination URL provided');
+            }
+        });
+    </script>
 </body>
 </html>
 <!-- Save this file as index.html and upload to Cloudflare Pages -->
