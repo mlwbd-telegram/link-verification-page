@@ -392,23 +392,39 @@
 
         .skip-button {
             background: linear-gradient(135deg, #ec4899 0%, #0ea5e9 50%, #a855f7 100%);
+            background-size: 200% 200%;
             color: white;
             border: none;
-            padding: 16px 48px;
-            font-size: 1.05rem;
-            font-weight: 600;
-            border-radius: 12px;
+            padding: 18px 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 16px;
             cursor: pointer;
             margin-top: 35px;
             display: none;
-            transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-            box-shadow: 0 8px 24px rgba(236, 72, 153, 0.4),
-                        0 2px 8px rgba(14, 165, 233, 0.2) inset;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            box-shadow: 0 10px 30px rgba(236, 72, 153, 0.5),
+                        0 4px 12px rgba(14, 165, 233, 0.3) inset,
+                        0 0 0 2px rgba(255, 255, 255, 0.1);
             position: relative;
             overflow: hidden;
-            letter-spacing: 0.02em;
+            letter-spacing: 0.5px;
             transform: translateZ(0);
             will-change: transform;
+            animation: buttonPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes buttonPulse {
+            0%, 100% {
+                box-shadow: 0 10px 30px rgba(236, 72, 153, 0.5),
+                            0 4px 12px rgba(14, 165, 233, 0.3) inset,
+                            0 0 0 2px rgba(255, 255, 255, 0.1);
+            }
+            50% {
+                box-shadow: 0 12px 35px rgba(236, 72, 153, 0.6),
+                            0 4px 12px rgba(14, 165, 233, 0.4) inset,
+                            0 0 0 3px rgba(255, 255, 255, 0.2);
+            }
         }
 
         .skip-button::before {
@@ -418,22 +434,49 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: left 0.5s;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.4), 
+                transparent);
+            transition: left 0.6s;
+        }
+
+        .skip-button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .skip-button:hover {
+            background-position: 100% 50%;
+            transform: translateY(-4px) scale(1.02) translateZ(0);
+            box-shadow: 0 15px 40px rgba(236, 72, 153, 0.6),
+                        0 5px 15px rgba(14, 165, 233, 0.4) inset,
+                        0 0 0 3px rgba(255, 255, 255, 0.2);
+            animation: none;
         }
 
         .skip-button:hover::before {
             left: 100%;
         }
 
-        .skip-button:hover {
-            transform: translateY(-2px) translateZ(0);
-            box-shadow: 0 12px 32px rgba(236, 72, 153, 0.5),
-                        0 2px 12px rgba(14, 165, 233, 0.3) inset;
+        .skip-button:hover::after {
+            width: 300px;
+            height: 300px;
         }
 
         .skip-button:active {
-            transform: translateY(-1px) translateZ(0);
+            transform: translateY(-2px) scale(0.98) translateZ(0);
+            box-shadow: 0 8px 25px rgba(236, 72, 153, 0.5),
+                        0 3px 10px rgba(14, 165, 233, 0.3) inset,
+                        0 0 0 2px rgba(255, 255, 255, 0.15);
         }
 
         .main-center-ad {
@@ -695,7 +738,10 @@
                         </div>
                     </div>
 
-                    <button class="skip-button" id="skipButton">✕ Skip & Continue</button>
+                    <button class="skip-button" id="skipButton">
+                        <span style="font-size: 1.3rem; margin-right: 8px;">✕</span>
+                        Skip & Continue
+                    </button>
                 </div>
 
                 <!-- MAIN CENTER AD PLACE -->
@@ -768,11 +814,6 @@
         loader.style.display = 'block';
         statusText.textContent = 'Verifying…';
 
-        function getUrlParameter(name) {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get(name);
-        }
-
         function onTurnstileSuccess(token) {
             setTimeout(() => {
                 loader.style.display = 'none';
@@ -793,13 +834,10 @@
             }, 800);
         }
 
+        // <!-- SKIP BUTTON REDIRECT LOGIC PLACE -->
         skipButton.addEventListener('click', function() {
-            const id = getUrlParameter('id');
-            if (!id) {
-                alert('Missing ID parameter');
-                return;
-            }
-            window.location.href = 'https://holy-shape-879d.abusaifeshovon.workers.dev/continue?id=' + id;
+            // window.location.href = 'YOUR_DESTINATION_URL';
+            console.log('Skip button clicked - add redirect URL');
         });
     </script>
 </body>
